@@ -32,7 +32,6 @@ kind: Service
 
 metadata:
    name: nwdb
-   namespace: gated
 
 spec:
    selector:
