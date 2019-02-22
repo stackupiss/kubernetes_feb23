@@ -30,18 +30,12 @@ spec:
            - name: DB_HOST
              value: nwdb-svc.myspace.svc.cluster.local
            - name: DB_USER
-             valueFrom:
-                secretKeyRef:
-                   name: nwapp-secret
-                   key: DB_USER
+             value: root
            - name: DB_PASSWORD
-             valueFrom:
-                secretKeyRef:
-                   name: nwapp-secret
-                   key: DB_PASSWORD
+             value: changeit
            resources:
               requests:
-                 cpu: 200m
+                 cpu: 100m
            livenessProbe: 
                httpGet:
                   path: /health
