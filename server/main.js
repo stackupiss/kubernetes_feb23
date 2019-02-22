@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const { join } = require('path');
 
 const cors = require('cors')
@@ -43,6 +45,14 @@ const pool = mysql.createPool({
 let appReady = false;
 let startTime = 0
 
+let isAngular = false;
+try {
+	//Hack - check if this is an angular build
+	fs.statSync(join(__dirname, '.angular'))
+	isAngular = true;
+} catch (err) { }
+
+
 const listCustomers = mkQuery('select id, company from customers limit ? offset ?', pool)
 const getCustomerById = mkQuery('select * from customers where id = ?', pool)
 
@@ -50,12 +60,18 @@ const app = express()
 
 app.engine('hbs', hbs())
 app.set('view engine', 'hbs')
+app.set('views', join(__dirname, 'views'))
 
 app.use(cors());
 app.use(bodyParser.json());
 
 
-app.get('/api/customers', (req, resp) => {
+app.get(['/api/customers', '/customers', '/'], (req, resp, next) => {
+
+	//Hack - check if we should serve angular files
+	if (isAngular && ('/' == req.path))
+		return (next())
+
 	const limit = parseInt(req.query.limit) || 10
 	const offset = parseInt(req.query.offset) || 0
 	listCustomers([limit, offset])
@@ -78,7 +94,7 @@ app.get('/api/customers', (req, resp) => {
 		})
 })
 
-app.get('/api/customer/:id', (req, resp) => {
+app.get(['/api/customer/:id', '/customer/:id'], (req, resp) => {
 	const custId = parseInt(req.params.id)
 	getCustomerById([custId])
 		.then(result => {

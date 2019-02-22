@@ -8,7 +8,6 @@ ADD main.js .
 ADD package.json .
 ADD package-lock.json .
 
-#ADD angular angular
 ADD public public
 ADD views views
 ADD config config
