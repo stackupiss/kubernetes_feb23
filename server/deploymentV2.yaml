@@ -28,7 +28,7 @@ spec:
            - containerPort: 3000
            env:
            - name: DB_HOST
-             value: nwdb.myspace.svc.cluster.local
+             value: nwdb-svc.myspace.svc.cluster.local
            - name: DB_USER
              valueFrom:
                 secretKeyRef:
@@ -39,6 +39,9 @@ spec:
                 secretKeyRef:
                    name: nwapp-secret
                    key: DB_PASSWORD
+           resources:
+              requests:
+                 cpu: 200m
            livenessProbe: 
                httpGet:
                   path: /health
