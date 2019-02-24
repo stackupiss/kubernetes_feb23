@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+
+metadata:
+   name: nwapp-hpa
+
+spec:
+   minReplicas: 2
+   maxReplicas: 8
+   targetCPUUtilizationPercentage: 80
+   scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: nwapp-deploy

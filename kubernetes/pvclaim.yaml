@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+   name: nwdb-pvc
+   annotations:
+      volume.beta.kubernetes.io/storage-class: standard
+      volume.beta.kubernetes.io/storage-provisioner: k8s.io/minikube-hostpath
+
+spec:
+   accessModes:
+   - ReadWriteOnce
+   resources:
+      requests:
+         storage: 4Gi

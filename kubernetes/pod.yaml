@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+   name: nwapp-pod
+   labels:
+      app: nwapp
+      version: v1
+
+spec:
+   containers:
+   - name: nwapp
+     image: chukmunnlee/northwind-app:v1
+     imagePullPolicy: IfNotPresent 
+     ports:
+     - containerPort: 3000
+     env:
+        - name: DB_HOST
+          value: nwdb-svc
+        - name: DB_USER
+          value: root
+        - name: DB_PASSWORD
+          value: changeit
+     livenessProbe:
+        httpGet:
+           path: /health
+           port: 3000
