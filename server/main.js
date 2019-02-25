@@ -14,6 +14,7 @@ const DB_HOST = process.env.DB_HOST || config.db_host || 'localhost'
 const DB_PORT = parseInt(process.env.DB_PORT) || config.db_port || 3306
 const DB_USER = process.env.DB_USER || config.db_user || 'fred'
 const DB_PASSWORD = process.env.DB_PASSWORD || config.db_password || 'fred'
+const INSTANCE_IP_ADDRESS = process.env.INSTANCE_IP_ADDRESS || 'ip not set'
 
 const PORT = parseInt(process.argv[2]) || config.app_port || parseInt(process.env.APP_PORT) || 3000
 
@@ -79,7 +80,7 @@ app.get(['/api/customers', '/customers', '/'], (req, resp, next) => {
 			resp.status(200)
 			resp.format({
 				'text/html': () => {
-					resp.render('customers.hbs', { customer: result })
+					resp.render('customers.hbs', { customer: result, ip_address: INSTANCE_IP_ADDRESS })
 				},
 				'application/json': () => {
 					resp.json(result)
@@ -133,7 +134,8 @@ app.get('/config', (req, resp) => {
 		port: PORT,
 		db_host: DB_HOST,
 		db_port: DB_PORT,
-		db_user: DB_USER
+		db_user: DB_USER,
+		ip_address: INSTANCE_IP_ADDRESS
 	})
 })
 
